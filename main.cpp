@@ -112,11 +112,11 @@ int main()
     }
 
     int i=0;
-    std::cout << "после:  "<< '\n';
+    std::cout << "после:  "<< endl;
         for(auto c : comb) {
             out("",c);
             std::cout << " : " << ++i+1000;
-            std::cout << '\n'; // out(n); //
+            std::cout << endl; // out(n); //
         }
 }
 
