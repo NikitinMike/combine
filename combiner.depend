@@ -1,6 +1,5 @@
 # depslib dependency file v1.0
-1540210375 source:/home/mike/Desktop/combiner/main.cpp
-	<iostream>
+1540214414 source:/home/mike/Desktop/combiner/main.cpp
 	<iostream>
 	<algorithm>
 	<vector>

@@ -1,5 +1,3 @@
-#include <iostream>
-
 using namespace std;
 
 // for_each example
@@ -13,7 +11,7 @@ typedef vector<VI> COMB;
 
 ostream& operator<<(ostream& os, VI vi)
 {
-    for(auto n : vi) os << n << "";
+    for(auto n : vi) os << n << ".";
     return os;
 }
 
@@ -52,9 +50,8 @@ class Combiner {
             amount=combiner(initseq.size());
         }
 
-        void out()
+        void out(long i=0)
         {
-            long i=0;
             for(auto c : comb)
                 if(i<amount) cout << c << " : " << ++i << endl;
         }
@@ -63,8 +60,11 @@ class Combiner {
 
 int main()
 {
-    //VI nums{4,3,2,1};
+    //setlocale(LC_ALL,"");
+    cout << "Привет!";
+//  VI nums{4,3,2,1};
     Combiner combs(VI{'A','B','C','D'});
+//    Combiner combs(VI{'х','у','я','к','с'});
     //Combiner combs(VI{'A','B','C','D','E','F','G','H'});
     cout << combs.amount << endl;
     combs.out();
