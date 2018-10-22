@@ -8,7 +8,8 @@ using namespace std;
 #include <vector>       // std::vector
 #include <array>
 
-typedef std::vector<char> VI;
+typedef vector<char> VI;
+typedef vector<VI> COMB;
 
 ostream& operator<<(ostream& os, VI vi)
 {
@@ -16,45 +17,55 @@ ostream& operator<<(ostream& os, VI vi)
     return os;
 }
 
-int factorial(int n) {
+long factorial(int n) {
     if (n>0) return factorial(n-1)*n;
     return 1;
 }
 
-VI nums{'A','B','C','D'}; // ,'G','H','I'
-//VI nums{4,3,2,1};
+class Combiner {
 
-// VI comb[factorial(n)];
-VI comb[1*2*3*4]; // *7*8*9
+    // VI comb[factorial(n)];
+    VI comb[1*2*3*4*5*6*7*8]; //
 
-VI swap(VI vi,int a,int b){
-    swap(vi[a],vi[b]);
-    return vi;
-}
-
-int combiner(int n){
-    if (n>2) {
-        int nf=combiner(n-1);
-        for(int i=0;i<nf;i++)
-            for(int j=1;j<n;j++)
-                comb[nf*j+i]=swap(comb[nf*(j-1)+i],n-j,n-j-1);
-        return nf*n;
+    VI swap(VI vi,long a,long b){
+        ::swap(vi[a],vi[b]);
+        return vi;
     }
-    comb[1]=swap(comb[0],0,1); // N=2
-    /*
-    // N=3
-    comb[2]=swap(comb[0],1,2);
-    comb[3]=swap(comb[1],1,2);
-    comb[4]=swap(comb[2],0,1);
-    comb[5]=swap(comb[3],0,1);
-    */
-    return 2;
-}
+
+    long combiner(int n){
+        if (n>2) {
+            long nf=combiner(n-1);
+            for(long i=0;i<nf;i++)
+                for(long j=1;j<n;j++)
+                    comb[nf*j+i]=swap(comb[nf*(j-1)+i],n-j,n-j-1);
+            return nf*n;
+        }
+        comb[1]=swap(comb[0],0,1); // N=2
+        return 2;
+    }
+
+    public:
+
+        long amount=0;
+        Combiner(VI initseq){
+            comb[0]=initseq; // init as 123456789
+            amount=combiner(initseq.size());
+        }
+
+        void out()
+        {
+            long i=0;
+            for(auto c : comb)
+                if(i<amount) cout << c << " : " << ++i << endl;
+        }
+
+};
 
 int main()
 {
-    comb[0]=nums; // init as 123456789
-    std::cout << combiner(nums.size()) << endl;
-    int i=0;
-    for(auto c : comb) std::cout << c << " : " << ++i << endl;
+    //VI nums{4,3,2,1};
+    Combiner combs(VI{'A','B','C','D'});
+    //Combiner combs(VI{'A','B','C','D','E','F','G','H'});
+    cout << combs.amount << endl;
+    combs.out();
 }
