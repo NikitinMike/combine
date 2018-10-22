@@ -6,12 +6,14 @@ using namespace std;
 #include <vector>       // std::vector
 #include <array>
 
-typedef vector<char> VI;
+typedef vector<wchar_t> VI;
 typedef vector<VI> COMB;
+
+char rus[] = "абвгдеёжзийклмнопрстуфхцчшщъьыэюя";
 
 ostream& operator<<(ostream& os, VI vi)
 {
-    for(auto n : vi) os << n << ".";
+    for(auto a : vi) os << rus[a-53424] << ".";
     return os;
 }
 
@@ -60,11 +62,11 @@ class Combiner {
 
 int main()
 {
-    //setlocale(LC_ALL,"");
-    cout << "Привет!";
+    setlocale(LC_ALL,"");
+    cout << rus << endl;
 //  VI nums{4,3,2,1};
-    Combiner combs(VI{'A','B','C','D'});
-//    Combiner combs(VI{'х','у','я','к','с'});
+//    Combiner combs(VI{'A','B','C','D'});
+    Combiner combs(VI{'а','б','в','г'});
     //Combiner combs(VI{'A','B','C','D','E','F','G','H'});
     cout << combs.amount << endl;
     combs.out();
