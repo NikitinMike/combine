@@ -60,7 +60,10 @@ class Combiner {
         {
             for(auto c : comb)
                 if(i<amount)
-                    cout << c << " : " << ++i << '\t'; // endl;
+                    cout << c << " : " << ++i
+                    << '\t'
+                    << endl
+                    ;
         }
 };
 
@@ -68,7 +71,8 @@ class Combiner {
 int main()
 {
     setlocale(LC_ALL, "rus");
-    Combiner combs("главрыба");
+//    Combiner combs("главрыба");
+    Combiner combs("дом");
     cout << combs.amount << endl;
     combs.out();
 }
