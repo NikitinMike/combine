@@ -1,42 +1,47 @@
 using namespace std;
 
-// for_each example
 #include <iostream>     // std::cout
+#include <string>
+#include <locale>
 #include <algorithm>    // std::for_each
-#include <vector>       // std::vector
-#include <array>
+//#include <vector>       // std::vector
+//#include <array>
 
-typedef vector<wchar_t> VI;
-typedef vector<VI> COMB;
+typedef string String;
 
-char rus[] = "абвгдеёжзийклмнопрстуфхцчшщъьыэюя";
-
+/*
 ostream& operator<<(ostream& os, VI vi)
 {
-    for(auto a : vi) os << rus[a-53424] << ".";
+    for(auto a : vi) os << a << ".";
     return os;
 }
+*/
 
-long factorial(int n) {
+int factorial(int n) {
     if (n>0) return factorial(n-1)*n;
     return 1;
 }
 
 class Combiner {
 
-    // VI comb[factorial(n)];
-    VI comb[1*2*3*4*5*6*7*8]; //
+    String comb[1*2*3*4*5*6*7*8]; // *9
 
-    VI swap(VI vi,long a,long b){
+    String swap1(String vi,int a,int b){
         ::swap(vi[a],vi[b]);
         return vi;
     }
 
-    long combiner(int n){
+    String swap(String vi,int a,int b){
+        ::swap(vi[a*2],vi[b*2]);
+        ::swap(vi[a*2+1],vi[b*2+1]);
+        return vi;
+    }
+
+    int combiner(int n){
         if (n>2) {
-            long nf=combiner(n-1);
-            for(long i=0;i<nf;i++)
-                for(long j=1;j<n;j++)
+            int nf=combiner(n-1);
+            for(int i=0;i<nf;i++)
+                for(int j=1;j<n;j++)
                     comb[nf*j+i]=swap(comb[nf*(j-1)+i],n-j,n-j-1);
             return nf*n;
         }
@@ -45,29 +50,23 @@ class Combiner {
     }
 
     public:
-
-        long amount=0;
-        Combiner(VI initseq){
-            comb[0]=initseq; // init as 123456789
-            amount=combiner(initseq.size());
+        int amount=0;
+        Combiner(String initseq){
+            comb[0]=initseq;
+            amount=combiner(initseq.length()/2);
         }
-
-        void out(long i=0)
+        void out(int i=0)
         {
             for(auto c : comb)
                 if(i<amount) cout << c << " : " << ++i << endl;
         }
-
 };
 
+char rus[] = "абвгдеёжзийклмнопрстуфхцчшщъьыэюя";
 int main()
 {
-    setlocale(LC_ALL,"");
-    cout << rus << endl;
-//  VI nums{4,3,2,1};
-//    Combiner combs(VI{'A','B','C','D'});
-    Combiner combs(VI{'а','б','в','г'});
-    //Combiner combs(VI{'A','B','C','D','E','F','G','H'});
+    setlocale(LC_ALL, "rus");
+    Combiner combs("главрыба");
     cout << combs.amount << endl;
     combs.out();
 }
