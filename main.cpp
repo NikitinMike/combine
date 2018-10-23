@@ -8,6 +8,7 @@ using namespace std;
 //#include <array>
 
 typedef string String;
+#define SWAP swap2
 
 /*
 ostream& operator<<(ostream& os, VI vi)
@@ -31,38 +32,39 @@ class Combiner {
         return vi;
     }
 
-    String swap(String vi,int a,int b){
+    String swap2(String vi,int a,int b){
         ::swap(vi[a*2],vi[b*2]);
         ::swap(vi[a*2+1],vi[b*2+1]);
         return vi;
     }
 
     int combiner(int n){
-        if (n>2) {
-            int nf=combiner(n-1);
-            for(int i=0;i<nf;i++)
-                for(int j=1;j<n;j++)
-                    comb[nf*j+i]=swap(comb[nf*(j-1)+i],n-j,n-j-1);
-            return nf*n;
+        if (n<3) {
+            comb[1]=SWAP(comb[0],0,1); // N=2
+            return 2;
         }
-        comb[1]=swap(comb[0],0,1); // N=2
-        return 2;
+        int nf=combiner(n-1);
+        for(int i=0;i<nf;i++)
+            for(int j=1;j<n;j++)
+                comb[nf*j+i]=SWAP(comb[nf*(j-1)+i],n-j,n-j-1);
+        return nf*n;
     }
 
     public:
         int amount=0;
-        Combiner(String initseq){
+        Combiner(String initseq,int bytes=2){
             comb[0]=initseq;
-            amount=combiner(initseq.length()/2);
+            amount=combiner(initseq.length()/bytes);
         }
         void out(int i=0)
         {
             for(auto c : comb)
-                if(i<amount) cout << c << " : " << ++i << endl;
+                if(i<amount)
+                    cout << c << " : " << ++i << '\t'; // endl;
         }
 };
 
-char rus[] = "абвгдеёжзийклмнопрстуфхцчшщъьыэюя";
+//char rus[] = "абвгдеёжзийклмнопрстуфхцчшщьъыэюя";
 int main()
 {
     setlocale(LC_ALL, "rus");
