@@ -1,78 +1,88 @@
+#include <iostream>
+
 using namespace std;
 
+// for_each example
 #include <iostream>     // std::cout
-#include <string>
-#include <locale>
 #include <algorithm>    // std::for_each
-//#include <vector>       // std::vector
-//#include <array>
+#include <vector>       // std::vector
+#include <array>
+#include <string>
+#include <sstream>
+#include <iterator>
 
-typedef string String;
-#define SWAP swap2
+typedef vector<string> VI;
 
-/*
 ostream& operator<<(ostream& os, VI vi)
 {
-    for(auto a : vi) os << a << ".";
+    for(auto n : vi) os << n << " ";
     return os;
 }
-*/
 
 int factorial(int n) {
     if (n>0) return factorial(n-1)*n;
     return 1;
 }
 
+
 class Combiner {
-
-    String comb[1*2*3*4*5*6*7*8]; // *9
-
-    String swap1(String vi,int a,int b){
+    int amount=0;
+    VI comb[1*2*3*4*5*6*7*8]; //
+    VI swap(VI vi,int a,int b){
         ::swap(vi[a],vi[b]);
         return vi;
     }
-
-    String swap2(String vi,int a,int b){
-        ::swap(vi[a*2],vi[b*2]);
-        ::swap(vi[a*2+1],vi[b*2+1]);
-        return vi;
+    VI split(string str){
+        istringstream buf(str);
+        istream_iterator<string> beg(buf), end;
+        vector<string> tokens(beg, end); // done!
+        // for(auto& s: tokens) cout << s << '\t';
+        // return VI{str,str,str};
+        return tokens;
     }
-
     int combiner(int n){
-        if (n<3) {
-            comb[1]=SWAP(comb[0],0,1); // N=2
-            return 2;
+        if (n>2) {
+            int nf=combiner(n-1);
+            for(int i=0;i<nf;i++)
+                for(int j=1;j<n;j++)
+                    comb[nf*j+i]=swap(comb[nf*(j-1)+i],n-j,n-j-1);
+            return nf*n;
         }
-        int nf=combiner(n-1);
-        for(int i=0;i<nf;i++)
-            for(int j=1;j<n;j++)
-                comb[nf*j+i]=SWAP(comb[nf*(j-1)+i],n-j,n-j-1);
-        return nf*n;
+        comb[1]=swap(comb[0],0,1); // N=2
+        return 2;
     }
 
     public:
-        int amount=0;
-        Combiner(String initseq,int bytes=2){
-            comb[0]=initseq;
-            amount=combiner(initseq.length()/bytes);
+
+        Combiner(VI initseq){
+            // cout << initseq << " :  " << initseq.size() << endl;
+            comb[0]=initseq; // init as 123456789
+            amount=combiner(initseq.size());
         }
-        void out(int i=0)
+
+        Combiner(string str){
+            VI initseq=split(str);
+            comb[0]=initseq;
+            amount=combiner(initseq.size());
+        }
+
+        void out()
         {
+            int i=0;
             for(auto c : comb)
-                if(i<amount)
-                    cout << c << " : " << ++i
-                    << '\t'
-                    << endl
-                    ;
+                if(i<amount) cout << c << " : " << ++i << endl;
+            // cout << combs.amount << endl;
         }
 };
 
-//char rus[] = "абвгдеёжзийклмнопрстуфхцчшщьъыэюя";
 int main()
 {
-    setlocale(LC_ALL, "rus");
-//    Combiner combs("главрыба");
-    Combiner combs("дом");
-    cout << combs.amount << endl;
-    combs.out();
+    //cout << split("мы не рабы");
+    // Combiner combs(VI{'A','B','C','D'});
+    Combiner combs1("мама мыла раму");
+    combs1.out();
+    Combiner combs2("мы не рабы");
+    combs2.out();
+    Combiner combs3("нас не догонят");
+    combs3.out();
 }
