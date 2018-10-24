@@ -1,8 +1,4 @@
-#include <iostream>
-
 using namespace std;
-
-// for_each example
 #include <iostream>     // std::cout
 #include <algorithm>    // std::for_each
 #include <vector>       // std::vector
@@ -24,10 +20,9 @@ int factorial(int n) {
     return 1;
 }
 
-
 class Combiner {
     int amount=0;
-    VI comb[1*2*3*4*5*6*7*8]; //
+    VI comb[1*2*3*4*5*6*7]; //
     VI swap(VI vi,int a,int b){
         ::swap(vi[a],vi[b]);
         return vi;
@@ -53,19 +48,22 @@ class Combiner {
     }
 
     public:
-
+        Combiner(){}
         Combiner(VI initseq){
             // cout << initseq << " :  " << initseq.size() << endl;
             comb[0]=initseq; // init as 123456789
             amount=combiner(initseq.size());
         }
-
         Combiner(string str){
             VI initseq=split(str);
             comb[0]=initseq;
             amount=combiner(initseq.size());
         }
-
+        void randomOut(){
+            int r=random()%amount;
+            cout.width(2);
+            cout << r << " : " << comb[r] << endl;
+        }
         void out()
         {
             int i=0;
@@ -77,12 +75,30 @@ class Combiner {
 
 int main()
 {
+    string text[]={
+        "у попа была собака",
+        "он её любил",
+        "она съела кусок мяса",
+        "он её убил",
+        "в землю закопал",
+        "надпись написал"
+    };
+
     //cout << split("мы не рабы");
     // Combiner combs(VI{'A','B','C','D'});
-    Combiner combs1("мама мыла раму");
-    combs1.out();
-    Combiner combs2("мы не рабы");
-    combs2.out();
-    Combiner combs3("нас не догонят");
-    combs3.out();
+    //Combiner combs1("мама мыла раму");combs1.out();
+    //Combiner combs2("мы не рабы");combs2.out();
+    //Combiner combs3("нас не догонят");combs3.out();
+    vector<Combiner> combs; //{"","","","",""};
+    //combs=new Combiner("у попа была собака"); combs->out();
+
+    for(auto a:text) {
+        cout << a << endl;
+        combs.push_back(Combiner(a));
+    }
+
+    int n=1;do{
+        cout << n++ << endl;
+        for(auto a:combs) a.randomOut();
+    }while(getchar()!=27);
 }
